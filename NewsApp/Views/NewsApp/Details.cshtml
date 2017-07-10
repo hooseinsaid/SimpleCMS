@@ -1,0 +1,76 @@
+﻿@model CMS.Models.NewsStory
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@section style
+{
+    <link href="@Url.Content("~/Content/DetailsPage.css")" rel="stylesheet" />
+}
+
+<h2>@Html.DisplayFor(model=>model.Title)</h2>
+
+
+<div class="container-fluid">
+    <div class="content-wrapper">
+        <div class="item-container">
+            <div class="container">
+                <div class="col-md-12">
+                    <div class="product col-md-5 service-image-left">
+
+                        
+                            <center>
+                                <img id="item-display" src="data:image;base64,@System.Convert.ToBase64String(Model.Image.ImageContent)" alt="">
+                            </center>
+                        
+                    </div>
+
+                    <div class="col-md-5">
+                        <div class="product-title">Keywords:</div>
+                        <div class="product-desc">
+                            @foreach (var kw in Model.KeyWords)
+                            {
+                                <span class="label label-info">@kw.keyWordContent</span>
+                            }
+                        </div>
+
+                        <hr>
+                        <div class="product-desc">
+                            Created by: <span class="badge">
+                            @Html.DisplayFor(model => model.User.FirstName)
+                            @Html.DisplayFor(model => model.User.LastName)</span>
+</div>
+                        <div class="product-desc">Created on: <span class="badge">@Html.DisplayFor(model => model.DateCreated)</span></div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="col-md-12 product-info">
+                <ul id="myTab" class="nav nav-tabs nav_tabs">
+
+                    <li class="active"><a href="#service-one" data-toggle="tab">Read the News Story</a></li>
+
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="service-one">
+
+                        <section class="container product-info">
+                            @*@Html.DisplayFor(model => model.Content)*@
+                            @Html.Raw(Model.Content)
+                        </section>
+
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p>
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-success" })
+</p>

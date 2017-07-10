@@ -1,0 +1,54 @@
+﻿@model PagedList.IPagedList<CMS.Models.NewsStory>
+@using PagedList.Mvc
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "News Stories";
+}
+
+@section style
+{
+    <link href="@Url.Content("~/Content/Index_ListView.css")" rel="stylesheet" />
+}
+
+<h2>List of News Stories</h2>
+
+    <div class="col-md-12">
+        <div id="products" class="row list-group">
+            @foreach (var item in Model)
+            {
+                <div class="item  col-xs-4 col-lg-4 grid-group-item list-group-item">
+                    <div class="thumbnail">
+                            <a href="@Url.Action("Details", "NewsApp", new { id = item.NewsStoryID })">
+                                <div class="aspect-ratio aspect-ratio-16-9 img-frame">
+                                    <img id="imageHolder" href="@Url.Action("Details", "NewsApp", new { id = item.NewsStoryID })" class="group list-group-image" src="data:image;base64,@System.Convert.ToBase64String(item.Image.ImageContent)" alt="" />
+                                </div>
+                            </a>
+                        <hr>
+                        <div class="caption">
+                            <h4 class="group inner list-group-item-heading">
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </h4>
+                            <p class="pull-right group inner list-group-item-text">
+                                Created on: @Html.DisplayFor(modelItem => item.DateCreated)<br />
+                                Published by: @Html.DisplayFor(modelItem => item.User.FirstName) @Html.DisplayFor(modelItem => item.User.LastName)
+                            </p>
+
+                            <div class="row">
+                                
+                                <div class="col-xs-12 col-md-6">
+                                    @Html.ActionLink("Read", "Details", new { id = item.NewsStoryID }, new { @class = "btn btn-success" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <br />
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+
+    </div>
+
+
